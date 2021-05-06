@@ -1,4 +1,4 @@
-const url = 'http://localhost:8080/fleamarket';
+const url = '/fleamarket';
 let stompClient;
 let selectedUser;
 let newMessages = new Map();

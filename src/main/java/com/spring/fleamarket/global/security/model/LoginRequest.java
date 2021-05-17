@@ -6,15 +6,12 @@ import lombok.ToString;
 
 @Getter
 @ToString
-public class LoginResponse {
-	
-	private int id;
+public class LoginRequest {
+
 	private String username;
+	private String password;
 	
 	@Builder
-	public LoginResponse(int id, String username) {
-		this.id = id;
-		this.username = username;
-	}
+	public LoginRequest() {}
 	
 }

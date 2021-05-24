@@ -33,7 +33,9 @@
 
         <div class="chat-history">
             <ul>
-				
+				<li v-for="(content, index) in array" :key="index">
+                    {{content.senderId}} : {{content.content}}
+                </li>
             </ul>
 
         </div> <!-- end chat-history -->
@@ -64,6 +66,8 @@
 import SockJS from 'sockjs-client'
 import Stomp from 'stompjs'
 //import axios from '../api'
+import { mapGetters } from 'vuex';
+
 let socket = new SockJS('http://localhost:8081/fleamarket/ws');
 let stompClient = Stomp.over(socket);
 export default {
@@ -72,6 +76,11 @@ export default {
     components: {
         
     },
+
+    computed: {
+        ...mapGetters(['getUid']),
+    },
+
     data: function() {
         return {
         userData : [
@@ -93,8 +102,8 @@ export default {
         data : null,
         selectedUser : '',
         opponent : '',
-        message : '',
-        loginedUser : 1,
+        message : '',       
+        array : [],
         
         }
     },
@@ -117,22 +126,32 @@ export default {
             },
             connectToChat(userId) {
 
-                console.log("connecting to chat...")
+                console.log("connecting to chat..." + userId);
                 console.log("URL : " + this.url + '/ws');
                 
-                stompClient.connect({}, function (frame) {
+               
+
+                stompClient.connect({}, (frame) => {
 
                     console.log("connected to: " + frame);
 
-                    stompClient.subscribe("http://localhost:8081/topic/messages/" + userId, function (response) {
+                    stompClient.subscribe("/topic/messages/" + userId, (response) => {
 
-                        this.data = JSON.parse(response.body);
-                        console.log(this.data);
+                        const data = JSON.parse(response.body);
+                        console.log(data);
+                        this.array.push(data);
                             //this.render(this.data.content, this.data.senderId);         
                     });
                 });
             },
+
             selectUser(userId, userName) {
+
+                if(this.getUid == null){
+                    this.connectToChat(this.getUid);
+                }
+                
+
                 console.log("selecting users: " + userId);
                 this.selectedUser = userId;
                 console.log(userName);
@@ -161,17 +180,17 @@ export default {
                 }));
             },
             scrollToBottom() {
+
                 window.$chatHistory = window.$('.chat-history');
                 window.$chatHistory.scrollTop(window.$chatHistory[0].scrollHeight);
-                // var chatHistory = document.getElementsByClassName("chat-history");
-                // chatHistory.scrollTop(chatHistory[0].scrollHeight);
+                
             },
             getCurrentTime() {
                 return new Date().toLocaleTimeString().replace(/([\d]+:[\d]{2})(:[\d]{2})(.*)/, "$1$3");
             },
             sendMessage(message) {
     
-                this.sendMsg(this.loginedUser, message);
+                this.sendMsg(this.getUid, message);
                 this.scrollToBottom();
 
                 // if (message.trim() !== '') {
@@ -190,8 +209,9 @@ export default {
         
                 
         created: function(){
-            this.connectToChat(1);
-        }
+            this.connectToChat(this.getUid);
+        },
+        
     
 }
 </script>

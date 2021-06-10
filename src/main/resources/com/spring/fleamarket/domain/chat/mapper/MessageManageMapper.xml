@@ -17,4 +17,13 @@
 		WHERE sender_id = #{senderId} AND receiver_id = #{receiverId} OR sender_id = #{receiverId} AND receiver_id = #{senderId}
 	</select>
 	
+	<select id="checkTime" resultType="java.util.Date">
+		SELECT create_date
+		FROM messages
+		WHERE content = #{content}
+		ORDER BY create_date
+		DESC LIMIT 1
+	
+	</select>
+	
 </mapper>

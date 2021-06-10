@@ -1,9 +1,13 @@
 package com.spring.fleamarket.domain.chat.model;
 
+
+
+import java.util.Date;
+
 import org.apache.ibatis.type.Alias;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,11 +20,14 @@ import lombok.ToString;
 @NoArgsConstructor
 public class MessageModel {
 
+	@Setter
 	private int messageNo;
 	@Setter
 	private int senderId;
 	@Setter
 	private int receiverId;
-	private String content;
+	private String content; 
+	@Setter
+	private Date createDate;
 		
 }

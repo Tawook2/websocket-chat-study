@@ -1,35 +1,51 @@
 package com.spring.fleamarket.domain.chat.controller;
 
-import java.security.Principal;
+
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.spring.fleamarket.domain.account.service.AccountFindService;
+import com.spring.fleamarket.domain.chat.service.ReportService;
 import com.spring.fleamarket.domain.model.Account;
-import com.spring.fleamarket.global.security.annotation.LoginedAccount;
+import com.spring.fleamarket.domain.model.Report;
 
-@Controller
+import lombok.extern.log4j.Log4j;
+
+@Log4j
+@RestController
 public class WebController {
+	
+	@Autowired
+	ReportService service;
 
 	@Autowired
 	AccountFindService serviceAF;
 	
 	@GetMapping("/chat")
-	public String getPage(Principal principal, Model model, @LoginedAccount Account account ) {
+	public List<Account> bringUpChatUser() {
 		
-		model.addAttribute("chatUser", serviceAF.selectAll());
-		
-		if(principal != null) {
+		//현재의 아이디와 채팅한 유저만 불어오기(수정필요)
+		List<Account> result = serviceAF.selectAll(); 
+	
+		return result;
+	}
+	
+	
+	@ResponseBody
+	@RequestMapping(value="/report", method = RequestMethod.POST)
+	public void saveReportInfo(@RequestBody Report rp) {
 			
-			model.addAttribute("userId", account.getId());
-			model.addAttribute("userName", account.getName());
-			
-		}
+		log.info(rp.toString());
+	
+		service.saveReport(rp);
 		
-		return "chat";
 	}
 	
 }

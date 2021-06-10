@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,6 +60,7 @@ public class AccountImageServiceTests {
 		service.insertAccountImageByAccountId(accountImageRequest, accountImage);
 	}
 	
+	@Ignore
 	@Test
 	public void updateAccountImageByAccountIdTest() throws Exception {
 		accountImage = accountFindService.selectAccountImageByAccountId(accountImage.getAccountId());
@@ -67,7 +69,7 @@ public class AccountImageServiceTests {
 			service.updateAccountImageByAccountId(accountImageRequest, accountImage);			
 		}
 	}
-
+	@Ignore
 	@Test
 	public void deleteAccountImageByAccountIdTest() throws Exception {
 		accountImage = accountFindService.selectAccountImageByAccountId(accountImage.getAccountId());

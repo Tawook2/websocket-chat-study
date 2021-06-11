@@ -11,6 +11,6 @@ public interface MessageManageService {
 	
 	public List<MessageModel> recallChat(MessageModel msgModel);
 	
-	public Date checkTime(String content);
+	public Date checkTime(int messageNo);
 		
 }

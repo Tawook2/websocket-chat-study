@@ -29,9 +29,9 @@ public class MessageManageServiceImpl implements MessageManageService{
 	}
 
 	@Override
-	public Date checkTime(String content) {
+	public Date checkTime(int messageNo) {
 		
-		return mapper.checkTime(content);
+		return mapper.checkTime(messageNo);
 	}
 
 }

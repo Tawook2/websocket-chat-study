@@ -31,15 +31,12 @@ public class MessageController {
 		log.info("handling send message: " + message);
 		
 		service.saveMessage(message);
-		
-		//DB 에서 시간 꺼내오기
-		
-		Date messageTime = service.checkTime(message.getContent());
+				
+		Date messageTime = service.checkTime(message.getMessageNo());
 		
 		message.setCreateDate(messageTime);
 		
 		//유저 유효성 처리하기 (백엔드)
-		
 		if(senderId != 0 && receiverId != 0) {
 			simpMessagingTemplate.convertAndSend("/topic/messages/" + message.getReceiverId(), message);
 			

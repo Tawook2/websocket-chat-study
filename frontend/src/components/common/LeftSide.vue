@@ -19,18 +19,15 @@
     </div>
 </template>
 <script>
-import axios from '../../api'
 import { mapGetters } from 'vuex';
 import UserImage from '@/components/common/UserImage.vue';
-
+import {eventBus}  from '@/main.js';
+import chatApi from '@/api/chat.js';
 
 export default {
-    prop: ['opp'],
     
     components: {
-        UserImage,
-        
-          
+        UserImage,     
     },
 
     computed: {
@@ -48,9 +45,9 @@ export default {
     methods: {
         // 유저 리스트 불러오는 함수
             userList(){
+
+            chatApi.bringUpChatUser()
               
-              axios.get("/chat")
-                
                 .then(response => {
                     
                     console.log(response.data);
@@ -59,22 +56,17 @@ export default {
 
                     this.userData = userList;
 
-                    console.log("??" + this.userData);
                 })
                 .catch(function(error){
                     console.log(error);
-                }) 
+                }); 
 
             },
 
             // 채팅 기록 불러오는 함수
-            recallChat(selectedUser) {
+            recallChat(getUid,selectedUser) {
                
-                // axios.post('/recallChat', null, {params: {
-                //     sender : this.getUid,
-                //     receiver : selectedUser,
-                // }})
-                axios.get(`/recallChat/${this.getUid}/${selectedUser}` )
+                chatApi.bringUpMessageRecord(getUid, selectedUser)
 
                 .then(response => {
                     
@@ -91,16 +83,20 @@ export default {
 
                 console.log("selecting users: " + userId);
                 this.selectedUser = userId;
+
                 console.log(userName);
                 
-                //유저 이동시 스크린에 채팅 지우기
-                //$('li').remove("#chat-contents");
-                
-                this.recallChat(this.selectedUser);
+                this.recallChat(this.getUid, this.selectedUser);
                             
                 this.opponent ='Chat with ' + userName;
                 this.reported ='Would you like to report ' + userName +'?';
         
+                eventBus.userIsSelected(this.selectedUser)
+
+                eventBus.opntIsSelected(this.opponent)
+
+                eventBus.reportIsSelected(this.reported)
+                
             },
 
 

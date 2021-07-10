@@ -12,5 +12,6 @@ public interface MessageManageMapper {
 	public List<MessageModel> recallChat(MessageModel msgModel);
 	
 	public Date checkTime(int messageNo);
+	
 
 }

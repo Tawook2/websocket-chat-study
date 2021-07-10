@@ -3,6 +3,8 @@ package com.spring.fleamarket.domain.chat.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,8 +38,10 @@ public class APIController {
 	ReportService serviceRP;
 	
 	@GetMapping("/recallChat/{sender}/{receiver}")
-	public List<MessageModel> bringUpMessageRecord(MessageModel msgModel, @PathVariable int sender, @PathVariable int receiver) {
+	public List<MessageModel> bringUpMessageRecord(@PathVariable int sender, @PathVariable int receiver) {
 			
+		MessageModel msgModel = new MessageModel();
+		
 		msgModel.setSenderId(sender);
 		
 		msgModel.setReceiverId(receiver);
@@ -57,11 +61,14 @@ public class APIController {
 	
 	@ResponseBody
 	@RequestMapping(value="/report", method = RequestMethod.POST)
-	public void saveReportInfo(@RequestBody Report rp) {
+	public ResponseEntity<String> saveReportInfo(@RequestBody Report rp) {
 			
 		log.info(rp.toString());
 	
 		serviceRP.saveReport(rp);
+		
+		return new ResponseEntity<>("success", HttpStatus.OK);
+		
 	}
 	
 	

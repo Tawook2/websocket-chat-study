@@ -11,6 +11,27 @@ window.$ = jQuery
 
 Vue.config.productionTip = false
 
+export const eventBus = new Vue({
+  methods:{
+    userIsSelected(user){
+      this.$emit('userIsSelected', user)
+    },
+
+    opntIsSelected(opnt){
+      this.$emit('opntIsSelected', opnt)
+    },
+
+    reportIsSelected(report){
+      this.$emit('reportIsSelected', report)
+    },
+
+    messageIsReceived(message){
+      this.$emit('messageIsReceived', message)
+    }
+
+  }
+})
+
 new Vue({
   methods: {
     ...mapActions(['account', 'getCurrentUserInfo']),

@@ -27,6 +27,8 @@ public class MessageController {
 		
 	@MessageMapping("/chat/{senderId}/{receiverId}")
 	public void sendMessage(@DestinationVariable int senderId, @DestinationVariable int receiverId, MessageModel message) {
+		
+		
 			
 		log.info("handling send message: " + message);
 		

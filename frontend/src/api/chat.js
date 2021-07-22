@@ -1,7 +1,7 @@
 import axios from '@/api'
 
-const bringUpChatUser = () => {
-    return axios.get("/chat");
+const bringUserList = (getUid) => {
+    return axios.get(`/chat/${getUid}`);
 };
 
 const bringUpMessageRecord = (getUid, selectedUser) => {
@@ -19,7 +19,7 @@ const saveReportInfo = (getUid, selectedUser, picked, reportDetail) => {
 };
 
 export default {
-    bringUpChatUser,
     bringUpMessageRecord,
     saveReportInfo,
+    bringUserList,
 };

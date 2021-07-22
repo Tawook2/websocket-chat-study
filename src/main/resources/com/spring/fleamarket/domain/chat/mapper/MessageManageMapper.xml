@@ -25,4 +25,21 @@
 
 	</select>
 	
+	<select id="bringUserList" resultType="UserList">
+		SELECT user, accounts.name AS "name", content, max(time) AS "create_date"
+		FROM
+		(SELECT content, max(messages.create_date) AS "time", 
+				CASE WHEN messages.sender_id = #{userId} THEN messages.receiver_id 
+					 WHEN messages.receiver_id = #{userId} THEN messages.sender_id 
+		             ELSE 0
+		             
+		    END AS "user"
+		    FROM messages
+		    GROUP BY messages.receiver_id, messages.sender_id) t, accounts
+		    
+		WHERE t.user != 1 AND t.user != 0 AND t.user = accounts.id
+		GROUP BY user 
+		ORDER BY max(t.time) DESC;
+	</select>
+	
 </mapper>

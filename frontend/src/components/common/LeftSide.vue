@@ -4,11 +4,14 @@
             <label for="me">My Account : {{this.getUid}}</label>
         </div>
         <ul class="list" id="usersList" >
-            <a href="#" @click="selectUser(i.id, i.name)" :key="i.id" :value="i" v-for="i in userData">
+            <a href="#" class="people-list-inside" @click="selectUser(i.user, i.name)" :key="i.user" :value="i" v-for="i in userData">
                 <li class="clearfix" >
-                    <UserImage v-bind:uid="i.id"></UserImage>
+                    <UserImage v-bind:uid="i.user"></UserImage>
                     <div class="about">
-                        <div id="userNameAppender" class="name">{{i.name}}</div>
+                        <span id="userNameAppender" class="name">{{i.name}}</span>
+                        <span>{{date}}</span>
+                        <div>{{i.content}}</div>
+                        
                         <div class="status">
                             <i class="fa fa-circle offline"></i>
                         </div>
@@ -40,30 +43,32 @@ export default {
             selectedUser : '',
             opponent : '',
             reported : '',
+            date : '',
         }
     },
     methods: {
-        // 유저 리스트 불러오는 함수
-            userList(){
+        
+            bringUserList(getUid){
 
-            chatApi.bringUpChatUser()
+                chatApi.bringUserList(getUid)
               
                 .then(response => {
                     
-                    console.log(response.data);
-
                     let userList = response.data;
 
                     this.userData = userList;
+
+                    for(var idx in userList){
+
+                        this.date = new Date(userList[idx].createDate).toLocaleTimeString().replace(/([\d]+:[\d]{2})(:[\d]{2})(.*)/, "$1$3");               
+                    }
 
                 })
                 .catch(function(error){
                     console.log(error);
                 }); 
-
             },
 
-            // 채팅 기록 불러오는 함수
             recallChat(getUid,selectedUser) {
                
                 chatApi.bringUpMessageRecord(getUid, selectedUser)
@@ -104,8 +109,20 @@ export default {
 
     created: function(){
             
-            this.userList();
+            this.bringUserList(this.getUid);
         },
 }
 </script>
+
+<style type="text/css">
+ .people-list-inside:link { color: white; text-decoration: none;}
+ .people-list-inside:visited { color: white; text-decoration: none;}
+ .people-list-inside:hover { color: white; text-decoration: none;}
+
+span{
+    margin-right: 10px;
+}
+</style>
+
+
 

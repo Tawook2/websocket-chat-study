@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.spring.fleamarket.domain.account.service.AccountFindService;
 import com.spring.fleamarket.domain.chat.model.MessageModel;
+import com.spring.fleamarket.domain.chat.model.UserListDTO;
 import com.spring.fleamarket.domain.chat.service.MessageManageService;
 import com.spring.fleamarket.domain.chat.service.ReportService;
 import com.spring.fleamarket.domain.model.Account;
@@ -55,6 +56,15 @@ public class APIController {
 		
 		//현재의 아이디와 채팅한 유저만 불어오기(수정필요)
 		List<Account> result = serviceAF.selectAll(); 
+	
+		return result;
+	}
+	
+	@GetMapping("/chat/{userId}")
+	public List<UserListDTO> bringUpChatUser(@PathVariable int userId) {
+		
+		//현재의 아이디와 채팅한 유저만 불어오기(수정필요)
+		List<UserListDTO> result = service.bringUserList(userId); 
 	
 		return result;
 	}

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.spring.fleamarket.domain.chat.mapper.MessageManageMapper;
 import com.spring.fleamarket.domain.chat.model.MessageModel;
+import com.spring.fleamarket.domain.chat.model.UserListDTO;
 import com.spring.fleamarket.domain.chat.service.MessageManageService;
 
 @Service
@@ -32,6 +33,12 @@ public class MessageManageServiceImpl implements MessageManageService{
 	public Date checkTime(int messageNo) {
 		
 		return mapper.checkTime(messageNo);
+	}
+
+	@Override
+	public List<UserListDTO> bringUserList(int userId) {
+		
+		return mapper.bringUserList(userId);
 	}
 
 }

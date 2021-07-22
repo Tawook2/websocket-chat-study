@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.spring.fleamarket.domain.chat.model.MessageModel;
+import com.spring.fleamarket.domain.chat.model.UserListDTO;
 
 public interface MessageManageMapper {
 
@@ -13,5 +14,6 @@ public interface MessageManageMapper {
 	
 	public Date checkTime(int messageNo);
 	
+	public List<UserListDTO> bringUserList(int userId);
 
 }

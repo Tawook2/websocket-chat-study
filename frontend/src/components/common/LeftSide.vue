@@ -9,7 +9,7 @@
                     <UserImage v-bind:uid="i.user"></UserImage>
                     <div class="about">
                         <span id="userNameAppender" class="name">{{i.name}}</span>
-                        <span>{{date}}</span>
+                        <span>{{$moment(i.createDate).format('YYYY-MM-DD h:mm:ss A')}}</span>
                         <div>{{i.content}}</div>
                         
                         <div class="status">
@@ -27,14 +27,18 @@ import UserImage from '@/components/common/UserImage.vue';
 import {eventBus}  from '@/main.js';
 import chatApi from '@/api/chat.js';
 
+
+
 export default {
     
     components: {
-        UserImage,     
+        UserImage,
+             
     },
 
     computed: {
         ...mapGetters(['getUid']),
+        
     },
 
     data: function() {
@@ -43,7 +47,6 @@ export default {
             selectedUser : '',
             opponent : '',
             reported : '',
-            date : '',
         }
     },
     methods: {
@@ -57,11 +60,6 @@ export default {
                     let userList = response.data;
 
                     this.userData = userList;
-
-                    for(var idx in userList){
-
-                        this.date = new Date(userList[idx].createDate).toLocaleTimeString().replace(/([\d]+:[\d]{2})(:[\d]{2})(.*)/, "$1$3");               
-                    }
 
                 })
                 .catch(function(error){
@@ -120,7 +118,7 @@ export default {
  .people-list-inside:hover { color: white; text-decoration: none;}
 
 span{
-    margin-right: 10px;
+    margin-right: 5px;
 }
 </style>
 

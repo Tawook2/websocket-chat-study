@@ -6,6 +6,9 @@ import store from './store'
 
 import jQuery from 'jquery'
 
+import VueMoment from 'vue-moment'
+Vue.use(VueMoment)
+
 window.jQuery = jQuery
 window.$ = jQuery
 

@@ -51,19 +51,9 @@ public class APIController {
 		
 	}
 	
-	@GetMapping("/chat")
-	public List<Account> bringUpChatUser() {
-		
-		//현재의 아이디와 채팅한 유저만 불어오기(수정필요)
-		List<Account> result = serviceAF.selectAll(); 
-	
-		return result;
-	}
-	
 	@GetMapping("/chat/{userId}")
 	public List<UserListDTO> bringUpChatUser(@PathVariable int userId) {
 		
-		//현재의 아이디와 채팅한 유저만 불어오기(수정필요)
 		List<UserListDTO> result = service.bringUserList(userId); 
 	
 		return result;

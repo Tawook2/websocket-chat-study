@@ -26,20 +26,17 @@
 	</select>
 	
 	<select id="bringUserList" resultType="UserList">
-		SELECT user, accounts.name AS "name", content, max(time) AS "create_date"
-		FROM
-		(SELECT content, max(messages.create_date) AS "time", 
-				CASE WHEN messages.sender_id = #{userId} THEN messages.receiver_id 
-					 WHEN messages.receiver_id = #{userId} THEN messages.sender_id 
-		             ELSE 0
-		             
-		    END AS "user"
-		    FROM messages
-		    GROUP BY messages.receiver_id, messages.sender_id) t, accounts
-		    
-		WHERE t.user != 1 AND t.user != 0 AND t.user = accounts.id
-		GROUP BY user 
-		ORDER BY max(t.time) DESC;
+		SELECT  t.user AS "user", t.content AS "content", accounts.name AS "name", t.create_date AS "create_date" FROM
+			(SELECT content, create_date, 
+					CASE WHEN messages.sender_id = #{userId} THEN messages.receiver_id 
+						 WHEN messages.receiver_id = #{userId} THEN messages.sender_id 
+			             ELSE 0
+			    	END AS "user",
+			    	ROW_NUMBER() OVER(ORDER BY create_date DESC) rn
+	    	FROM messages) t, accounts
+	    WHERE t.user != #{userId} AND t.user != 0 AND t.user = accounts.id
+	    GROUP BY t.user
+	    ORDER BY t.create_date DESC;
 	</select>
 	
 </mapper>
